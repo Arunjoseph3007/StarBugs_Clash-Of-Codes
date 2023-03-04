@@ -5,24 +5,38 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  Image,
   Text,
   useColorMode,
   useDisclosure,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
+  Avatar,
 } from "@chakra-ui/react";
-import Image from "next/image";
 
 export default function Navbar() {
   const { toggleColorMode, colorMode } = useColorMode();
-  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Flex
       shadow="md"
       gap={3}
       alignItems="center"
+      justifyContent={"space-between"}
       paddingInline={16}
       paddingBlock={4}
     >
-      <Image alt="logo" src="/logo2.png" height={40} width={80} />
+      <Image
+              alt={'Logo'}
+              align={'center'}
+              w={'8%'}
+              h={'10%'}
+              src={
+                'logo2.png'
+              }
+            />
       <InputGroup>
         <Input rounded="full" placeholder="Search..." />
         <InputRightElement>
@@ -30,15 +44,29 @@ export default function Navbar() {
         </InputRightElement>
       </InputGroup>
       
-      {isOpen ? (
-          <Box pb={4} display={{ md: 'none' }}>
-            <Stack as={'nav'} spacing={4}>
-              {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
-              ))}
-            </Stack>
-          </Box>
-        ) : null}
+      <Flex alignItems={'center'}>
+            <Menu>
+              <MenuButton
+                as={Button}
+                rounded={'full'}
+                variant={'link'}
+                cursor={'pointer'}
+                minW={0}>
+                <Avatar
+                  size={'md'}
+                  src={
+                    'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
+                  }
+                />
+              </MenuButton>
+              <MenuList>
+                <MenuItem>Link 1</MenuItem>
+                <MenuItem>Link 2</MenuItem>
+                <MenuDivider />
+                <MenuItem>Link 3</MenuItem>
+              </MenuList>
+            </Menu>
+          </Flex>
     </Flex>
   );
 }
