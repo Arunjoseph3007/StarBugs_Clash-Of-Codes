@@ -23,11 +23,13 @@ import {
   Lorem,
 } from "@chakra-ui/react";
 import Navbar from "@/components/Navbar";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { MdLocationOn, MdOutlineLocationCity } from "react-icons/md";
 import { BsCalendarDate, BsFillCalendarDateFill } from "react-icons/bs";
 import { SiYourtraveldottv } from "react-icons/si";
 import Link from "next/link";
+import axios from "axios";
+import { useRouter } from "next/router";
 const Feature = ({ text, icon, iconBg }) => {
   return (
     <Stack direction={"row"} align={"center"}>
@@ -47,6 +49,7 @@ const Feature = ({ text, icon, iconBg }) => {
 };
 
 export default function SplitWithImage() {
+  const { query } = useRouter();
   const [groupDetails, setGroupDetails] = useState({
     Name: "Mera Desh Tour",
     Source: "Mumbai",
@@ -62,10 +65,41 @@ export default function SplitWithImage() {
     mode: "Road",
     vcurl:
       "https://chal-mere-yaar.whereby.com/example-prefix513d5e4d-9918-4ce3-863b-66a98cbac233?roomKey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZWV0aW5nSWQiOiI3MDc5MTI1OSIsInJvb21SZWZlcmVuY2UiOnsicm9vbU5hbWUiOiIvZXhhbXBsZS1wcmVmaXg1MTNkNWU0ZC05OTE4LTRjZTMtODYzYi02NmE5OGNiYWMyMzMiLCJvcmdhbml6YXRpb25JZCI6IjE3OTY0NyJ9LCJpc3MiOiJodHRwczovL2FjY291bnRzLnNydi53aGVyZWJ5LmNvbSIsImlhdCI6MTY3NzkzMzYxNywicm9vbUtleVR5cGUiOiJtZWV0aW5nSG9zdCJ9.h-Uad-TMu4TGisXiC0mxFK6Df0tpPSfP4oqy4yIjhaY",
+      plan:"Plan Here",
   });
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const btnRef = useRef(null);
+  async function getDetails() {
+    if (!query.grouId)
+      return
+    try {
+      let headers = {
+        "Content-Type": "multipart/form-data" ,
+        Authorization: "Token " + localStorage.getItem("token"),
+      };
+      var res =await axios.get(`http://coctrinity.pythonanywhere.com/login/group-detail/${query.grouId}/`,{headers})
+      console.log(res.data);
+      setGroupDetails({
+        Name: res.data[0].name,
+        Source: res.data[0].source,
+        Destination: res.data[0].destination,
+        startDate: res.data[0].start_date,
+        endDate: res.data[0].time,
+        People: res.data[0].no_of_people,
+        Details:
+        res.data[0].description,
+        imageurl: "https://coctrinity.pythonanywhere.com/"+res.data[0].image,
+        isInterested: false,
+        estimateCost: res.data[0].budget,
+        mode: res.data[0].travel_mode,
+        vcurl:res.data[0].meet_link,
+        plan:res.data[0].description
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  useEffect(()=>{getDetails()},[query])
   return (
     <Container maxW={"7xl"}>
       <Navbar />
@@ -147,7 +181,7 @@ export default function SplitWithImage() {
             <Text color={"gray.900"} fontSize={"lg"}>
               Estimated Cost of Plan ₹{groupDetails.estimateCost} per person
               <br />
-              <Text ref={btnRef} onClick={onOpen} color={"black"} as={"ins"}>
+              <Text ref={btnRef} onClick={onOpen} color={"black"} as={"ins"} cursor={"pointer"}>
                 More Deails
               </Text>
             </Text>
@@ -163,7 +197,7 @@ export default function SplitWithImage() {
                 <ModalHeader>Detailed Plan</ModalHeader>
                 
                 <ModalBody>
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. Maiores, sed quasi quia accusantium exercitationem, quos iure nostrum unde fugit, aliquid autem labore sapiente harum tempore mollitia provident similique! Debitis voluptates ipsam, culpa voluptatum fugit vitae dolorum atque sequi, architecto quis perferendis vero ipsa id? Hic voluptatibus ut reiciendis vitae dolorem rem dolore aut, suscipit eos, doloremque inventore voluptate voluptatem quidem reprehenderit temporibus ullam natus id blanditiis culpa quae laboriosam saepe fuga ipsum illo! Quos, consequatur atque animi dolore nemo beatae recusandae corrupti corporis illum laborum sint eligendi saepe sunt repellendus ea voluptates, distinctio ratione? Minus totam voluptas alias non aliquam nihil qui iste facere maxime, cumque nostrum autem mollitia aspernatur odio consequuntur vero impedit nobis quod atque eligendi ratione molestias. Asperiores voluptates tempore sapiente numquam libero! Optio sunt non eos voluptatum minus neque doloremque voluptatibus qui laborum! Eius culpa obcaecati quia distinctio necessitatibus facilis, aspernatur quos suscipit maiores repellat iste. In ullam dolores dignissimos maiores, autem voluptate ipsum necessitatibus deleniti optio a! Harum, nisi inventore? Sed, tempore maiores quae cumque, id eveniet quis ipsum minus, animi excepturi quos delectus! Accusamus sit commodi unde cupiditate id, provident, numquam est suscipit sequi labore maiores consequatur laudantium odio hic fugit saepe asperiores veniam?
+                  {groupDetails.plan}
                 </ModalBody>
                 <ModalFooter>
                   <Button onClick={onClose} colorScheme={"facebook"}>Close</Button>
