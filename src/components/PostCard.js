@@ -15,13 +15,14 @@ export default function PostCard({
   postContent,
   postImage,
   likeCount = 6,
+  likePost,
 }) {
   return (
     <Container
       //   _dark={{ bg: "gray.900" }}
       //   bg="gray.100"
       border="2px"
-      shadow='xl'
+      shadow="xl"
       borderColor="gray.100"
       rounded="lg"
       marginTop={4}
@@ -34,7 +35,7 @@ export default function PostCard({
       <Text marginBlock={3}>{postContent}</Text>
       <Image width="full" objectFit="contain" src={postImage} alt="Post" />
       <Flex marginTop={2}>
-        <Button variant="ghost" leftIcon={<ViewIcon />}>
+        <Button onClick={likePost} variant="ghost" leftIcon={<ViewIcon />}>
           {likeCount} likes
         </Button>
         <Button variant="ghost" leftIcon={<ChatIcon />}>
