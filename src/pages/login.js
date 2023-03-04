@@ -22,11 +22,11 @@ export default function Login() {
     password: "",
   });
 
-  const handleChange = (e) =>
+  const handleChange = (e) => {
     setRegisterDetails((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
-    }));
+    }));}
 
   const handleSubmit = async (e) => {
     e.preventDefault();

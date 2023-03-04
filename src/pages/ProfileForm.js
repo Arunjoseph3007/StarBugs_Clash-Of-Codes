@@ -1,12 +1,12 @@
 import { useState } from "react";
 import Verify from "../components/Verify";
+import axios from "axios";
+import FormData from "form-data";
 import {
   FormControl,
   Input,
   FormLabel,
   Textarea,
-  Radio,
-  RadioGroup,
   Stack,
   Box,
   Heading,
@@ -15,16 +15,73 @@ import {
 
 export default function ProfileForm() {
   const [showModal, setShowModal] = useState(false);
+  const [name, setName] = useState("");
+  const [location, setLocation] = useState("");
+  const [interest, setInterest] = useState("");
+  const [dob, setDob] = useState("");
+  const [gender, setGender] = useState("");
+
+  async function submitForm(e) {
+    e.preventDefault();
+    // let data = new FormData();
+    // data.append("name", name);
+    // data.append("location", location);
+    // data.append("interest", interest);
+    // data.append("dob", dob);
+    // data.append("gender", gender);
+    // console.log(data)
+
+    let data = {
+      "user": "3",
+      "name": {name},
+      "interests": {interest},
+      "dob": {dob},
+      "location": {location},
+      "gender": {gender}
+    }
+    console.log(data)
+
+    try {
+      let headers = {
+        "Content-Type": "application/json",
+        Authorization:
+          "Token 9fb10eb951c9c33a768b4dc475d410f3c2064b928004a2a3aa13a1648f70494c",
+      }
+      let reqOptions = {
+        url: "https://coctrinity.pythonanywhere.com/login/profile-create",
+        method: "POST",
+        headers: headers,
+        data: data,
+      };
+
+      let response = await axios.request(reqOptions);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setName("");
+      setLocation("");
+      setDob("");
+      setGender("");
+      setInterest("");
+    }
+  }
   return (
-    <>
-      <FormControl maxWidth="50vw" colorScheme={"facebook"} isRequired>
+    <Box w="50vw" border={"2px solid black"} display="block">
+      <FormControl colorScheme={"facebook"} encType="multipart/form" as='form'>
         <Heading textAlign={"center"} as="h4" color={"blue.700"} my="2px">
           Edit Profile
         </Heading>
         <Stack>
           <Box display={"grid"} gridTemplateColumns="1fr 1fr">
             <FormLabel display={"inline"}>Username</FormLabel>
-            <Input placeholder="Username" w="20vw" type="text" isRequired />
+            <Input
+              placeholder="Username"
+              w="20vw"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
           </Box>
           <Box display={"grid"} gridTemplateColumns="1fr 1fr">
             <FormLabel display={"inline"}>Profile Photo</FormLabel>
@@ -32,25 +89,40 @@ export default function ProfileForm() {
           </Box>
           <Box>
             <FormLabel>Interests</FormLabel>
-            <Textarea placeholder="Interests"/>
+            <Textarea
+              placeholder="Interests"
+              id="interestsInput"
+              value={interest}
+              onChange={(e) => setInterest(e.target.value)}
+            />
           </Box>
           <Box display={"grid"} gridTemplateColumns="1fr 1fr">
             <FormLabel display={"inline"}>Location</FormLabel>
-            <Input placeholder="Location" w="20vw" type="text" />
+            <Input
+              placeholder="Location"
+              w="20vw"
+              type="text"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+            />
           </Box>
           <Box display={"grid"} gridTemplateColumns="1fr 1fr">
             <FormLabel display={"inline"}>Date of Birth</FormLabel>
-            <Input w="20vw" type="date" />
+            <Input
+              w="20vw"
+              type="date"
+              value={dob}
+              onChange={(e) => setDob(e.target.value)}
+            />
           </Box>
-          <Box>
+          <Box display={"grid"} gridTemplateColumns="1fr 1fr">
             <FormLabel display={"inline"}>Gender</FormLabel>
-            <RadioGroup defaultValue="1">
-              <Stack spacing={4} direction="row">
-                <Radio value="1">Male</Radio>
-                <Radio value="2">Female</Radio>
-                <Radio value="3">Prefer not to say</Radio>
-              </Stack>
-            </RadioGroup>
+            <Input
+              w="20vw"
+              type="text"
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+            />
           </Box>
           <Box>
             <FormLabel display={"inline"}>Verify your Profile</FormLabel>
@@ -70,11 +142,11 @@ export default function ProfileForm() {
               }}
             />
           </Box>
-          <Button colorScheme="facebook" type="submit">
+          <Button colorScheme="facebook" onClick={submitForm}>
             Submit
           </Button>
         </Stack>
       </FormControl>
-    </>
+    </Box>
   );
 }
