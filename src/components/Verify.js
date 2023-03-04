@@ -53,28 +53,32 @@ import {
 } from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
 import React, { useState } from "react";
+import axios from "axios";
 
 export default function Verify({ show, close }) {
   const [imageDetails, setImageDetails] = useState(null);
+  const [aadharDetails, setAadharDetails] = useState("");
   function uploadImage() {
-    let file = document.getElementById("fileInput").files[0];
+    let file = document.getElementById("fileInput2").files[0];
     if (file)
       setImageDetails( file );
   }
   if (!show) {
     return null;
   }
-  async function handleSubmit(params) {
+  async function handleSubmit(e) {
+    e.preventDefault();
     let data = new FormData();
+    data.append('addharnumber', aadharDetails);
     if (imageDetails)
-    data.append("profile_pic", imageDetails);
+    data.append("file", imageDetails);
     try {
       let headers = {
         "Content-Type": "multipart/form-data" ,
         Authorization: "Token " + localStorage.getItem("token"),
       };
       let response = await axios.post(
-        "https://coctrinity.pythonanywhere.com/login/",
+        "http://coctrinity.pythonanywhere.com/login/addhar-create",
         data,
         { headers }
       );
@@ -110,6 +114,8 @@ export default function Verify({ show, close }) {
               placeholder="Aadhar number"
               w="20vw"
               bgColor={"white"}
+              value={aadharDetails}
+              onChange={(e) => setAadharDetails(e.target.value)}
             />
           </Box>
 
@@ -118,7 +124,7 @@ export default function Verify({ show, close }) {
             <FormLabel display={"inline"} px={'5px'}>Upload image</FormLabel>
             <input
                   name="photo"
-                  id="fileInput"
+                  id="fileInput2"
                   accept="image/*"
                   className="hidden"
                   type="file"
@@ -126,7 +132,7 @@ export default function Verify({ show, close }) {
                 />
           </Box>
         </Stack>
-        <Button colorScheme="facebook" w={"10vw"} type="submit" my={"2px"}>
+        <Button colorScheme="facebook" w={"10vw"} type="submit" my={"2px"} onClick={handleSubmit}>
           Submit
         </Button>
       </FormControl>
