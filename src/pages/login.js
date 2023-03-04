@@ -35,12 +35,12 @@ export default function Login() {
       const res = await axios.post(
         "https://coctrinity.pythonanywhere.com/login/login/",
         {
-          password: registerDetails.password,
           username: registerDetails.userName,
+          password: registerDetails.password,
         }
       );
       localStorage.setItem("token",res.token)
-      localStorage.setItem("username",res.user.username)
+      // localStorage.setItem("username",res.user.username)
       router.push("/" + "feed");
       console.log(res.data);
     } catch (error) {

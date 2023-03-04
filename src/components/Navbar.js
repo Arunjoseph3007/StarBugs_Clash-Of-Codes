@@ -17,15 +17,15 @@ import {
   Avatar,
 } from "@chakra-ui/react";
 
+
 export default function Navbar() {
   const { toggleColorMode, colorMode } = useColorMode();
+  
   return (
     <Flex
-      shadow="md"
       gap={3}
       alignItems="center"
       justifyContent={"space-between"}
-      paddingInline={16}
       paddingBlock={4}
     >
       <Image
@@ -34,10 +34,10 @@ export default function Navbar() {
               w={'8%'}
               h={'10%'}
               src={
-                'logo2.png'
+                '/logo2.png'
               }
             />
-      <InputGroup>
+      <InputGroup width={'80%'} >
         <Input rounded="full" placeholder="Search..." />
         <InputRightElement>
           <SearchIcon />
@@ -60,10 +60,9 @@ export default function Navbar() {
                 />
               </MenuButton>
               <MenuList>
-                <MenuItem>Link 1</MenuItem>
-                <MenuItem>Link 2</MenuItem>
+                <MenuItem>Edit Profile</MenuItem>
                 <MenuDivider />
-                <MenuItem>Link 3</MenuItem>
+                <MenuItem>Logout</MenuItem>
               </MenuList>
             </Menu>
           </Flex>
