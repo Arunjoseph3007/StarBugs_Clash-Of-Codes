@@ -80,6 +80,8 @@ export default function CreatePlan() {
     data.append("time", tripDetails.date.endDate.toDateString());
     data.append("start_date", tripDetails.date.endDate.toDateString());
     data.append("budget", tripDetails.budget);
+    data.append("description", tripDetails.desc);
+    data.append("slogan", tripDetails.shortDesc);
     data.append("no_of_people", tripDetails.noOfPeople);
     data.append("travel_mode", tripDetails.mode.value);
     data.append("image", tripDetails.img);
