@@ -259,20 +259,20 @@ import {
       label: 'About Us',
       children: [
         {
-          label: 'Job Board',
-          subLabel: 'Find your dream design job',
+          label: 'Travel Mate',
+          subLabel: 'Find A Travel Mate',
           href: '#',
         },
         {
-          label: 'Freelance Projects',
-          subLabel: 'An exclusive list for contract work',
+          label: 'Free Travel',
+          subLabel: 'Earn Points and get a free travel to any location',
           href: '#',
         },
       ],
     },
     {
       label: 'Contact Us',
-      href: '#',
+      href: '/contactus',
     },
     {
       label: 'Explore',
