@@ -46,7 +46,7 @@ export default function Login() {
   return (
     <Stack minH={"100vh"} direction={{ base: "column", md: "row" }}>
       <Flex p={8} flex={1} align={"center"} justify={"center"}>
-        <Stack spacing={4} w={"full"} maxW={"md"} >
+        <Stack spacing={4} w={"full"} maxW={"md"}>
           <Heading fontSize={"2xl"} color={"#385898"}>
             Sign in to your account
           </Heading>
@@ -78,11 +78,15 @@ export default function Login() {
             >
               <Link color={"#385898"}>Forgot password?</Link>
             </Stack>
-            <Button colorScheme={"facebook"} variant={"solid"} onClick={handleSubmit}>
+            <Button
+              colorScheme={"facebook"}
+              variant={"solid"}
+              onClick={handleSubmit}
+            >
               Sign in
             </Button>
             <Center gap={2} fontSize="small">
-              <Text>Don't have an account? </Text>
+              <Text>Don&apos;t have an account? </Text>
               <Link href="/signup">
                 <Text color="#0652cf">SignUp</Text>
               </Link>
