@@ -86,10 +86,13 @@ body {
   /* overflow-x: hidden; */
 }
 
-
 a {
   color: inherit;
   text-decoration: none;
+}
+
+.rdrDefinedRangesWrapper {
+  display: none;
 }
 
 @media (prefers-color-scheme: dark) {
