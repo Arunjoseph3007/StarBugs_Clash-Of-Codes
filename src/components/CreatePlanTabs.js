@@ -9,6 +9,7 @@ import {
   CardHeader,
   Center,
   Container,
+  Divider,
   Flex,
   Grid,
   HStack,
@@ -81,7 +82,7 @@ export default function CreatePlanTabs({
                       <LockIcon />
                       <Text>{attr.address?.slice(0, 20) || attr.name}</Text>
                     </Flex>
-                    
+
                     <Flex gap={2}>
                       <LockIcon />
                       <Text>Rating {attr.rating || "4.2"}</Text>
@@ -130,7 +131,7 @@ export default function CreatePlanTabs({
                       <LockIcon />
                       <Text>{attr.address?.slice(0, 20) || attr.name}</Text>
                     </Flex>
-                    
+
                     <Flex gap={2}>
                       <LockIcon />
                       <Text>Rating {attr.rating || "4.2"}</Text>
@@ -150,7 +151,15 @@ export default function CreatePlanTabs({
               ))}
             </HStack>
           </TabPanel>
-          <TabPanel>gpt</TabPanel>
+          <TabPanel>
+            <Box mt={8} bg="gray.100" p={8}>
+              <Heading fontFamily='Poppins'>Travel Plan</Heading>
+              <Divider my={2}/>
+              <Text fontWeight="semibold" fontSize={20} textAlign="justify">
+                {gpt}
+              </Text>
+            </Box>
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </Container>
