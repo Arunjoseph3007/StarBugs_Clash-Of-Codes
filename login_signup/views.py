@@ -17,6 +17,8 @@ from .models import *
 from .serializers import *
 from django.db.models import Q
 import os
+import requests
+import json
 
 ########################Login signup part begins####################################
 
@@ -49,6 +51,39 @@ def Validate(aadharNum):
         return 'Invalid Aadhar Number'
     except IndexError:
         return 'Invalid Aadhar Number'
+
+
+def gettingmeetlink():
+
+    reqUrl = "https://api.whereby.dev/v1/meetings"
+
+    headersList = {
+     "Accept": "*/*",
+     "User-Agent": "Thunder Client (https://www.thunderclient.com)",
+     "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmFwcGVhci5pbiIsImF1ZCI6Imh0dHBzOi8vYXBpLmFwcGVhci5pbi92MSIsImV4cCI6OTAwNzE5OTI1NDc0MDk5MSwiaWF0IjoxNjc3OTI0NzIzLCJvcmdhbml6YXRpb25JZCI6MTc5NjQ3LCJqdGkiOiJjMjg5YjlmYS05YTM5LTQxNmYtODU0MC1hOTFkZDZmOWY5ZDUifQ.ENiPCQJeaohvoyn1Qlm1tcki88joCLR7oCwytxVBA7I",
+     "Content-Type": "application/json" 
+    }
+
+    payload = json.dumps({
+      "templateType": "viewerMode",
+      "isLocked": False,
+      "roomNamePrefix": "example-prefix",
+      "roomNamePattern": "uuid",
+      "roomMode": "normal",
+      "startDate": "2023-03-05T14:15:22Z",
+      "endDate": "2023-03-08T14:15:22Z",
+      "fields": [
+        "hostRoomUrl"
+      ]
+    })
+
+    response = requests.request("POST", reqUrl, data=payload,  headers=headersList)
+
+    print(response.text)
+    x = json.loads(response.text)
+    return x.get('hostRoomUrl')
+
+
 
 
 class RegistrationAPI(generics.GenericAPIView):
@@ -193,16 +228,63 @@ class AddharList(generics.ListCreateAPIView):
         else:
             print('Invalid Aadhar Number')
             return Response('Invalid Aadhar Number')
+    
+    def get(self,request):
+        datane =  Addhaardocument.objects.filter(owner=self.request.user)
+        serializer = addharserializer(datane,many=True)
+        return Response(serializer.data)
+
 
 
 #########################Group part begins ############################################
 
-class AddharList(generics.ListCreateAPIView):
+class groupList(generics.ListCreateAPIView):
     queryset = Groupdetail.objects.all()
     serializer_class = groupdetailserializer
     permission_classes = [permissions.IsAuthenticated]
 
-    
+    def post(self,request):
+        name = request.POST.get('name')
+        source = request.POST.get('source')
+        destination = request.POST.get('destination')
+        time = request.POST.get('time')
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        description = request.POST.get('description')
+        image = request.FILES['image']
+        budget = request.POST.get('budget')
+        no_of_people = request.POST.get('no_of_people')
+        travel_mode = request.POST.get('travel_mode')
+
+        meet_link =  gettingmeetlink()
+        print(meet_link)
+
+        userde = Groupdetail.objects.create(owner = self.request.user,name = name,source=source,destination=destination,time=time,start_date=start_date,end_date=end_date,description=description,image=image,budget=budget,no_of_people=no_of_people,travel_mode=travel_mode,meet_link=meet_link)
+        dateof = groupdetailserializer(userde)
+        return Response(dateof.data)
+
+
+
+class groupList_destroy_view(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Groupdetail.objects.all()
+    serializer_class = groupdetailserializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def retrieve(self,request,pk=None):
+        like = Groupdetail.objects.filter(id=pk)
+        data = groupdetailserializer(like,many=True)
+        return Response(data.data)
+
+class groupListonlyget(generics.ListCreateAPIView):
+    queryset = Groupdetail.objects.all()
+    serializer_class = groupdetailserializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self,request):
+        like = Groupdetail.objects.filter(owner=self.request.user)
+        data = groupdetailserializer(like,many=True)
+        return Response(data.data)
+
 
 
 
