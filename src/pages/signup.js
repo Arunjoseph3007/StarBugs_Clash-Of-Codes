@@ -48,6 +48,8 @@ export default function Register() {
           username: registerDetails.userName,
         }
       );
+      localStorage.setItem("firstname",registerDetails.firstName)
+      localStorage.setItem("lastname",registerDetails.lastName)
       router.push("/" + "login");
       console.log(res.data);
     } catch (error) {

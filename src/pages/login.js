@@ -39,7 +39,9 @@ export default function Login() {
           password: registerDetails.password,
         }
       );
-      localStorage.setItem("token",res.token)
+      localStorage.setItem("token",res.data.token)
+      localStorage.setItem("id",res.data.user.id)
+      localStorage.setItem("username",res.data.user.username)
       // localStorage.setItem("username",res.user.username)
       router.push("/" + "feed");
       console.log(res.data);

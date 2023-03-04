@@ -57,7 +57,7 @@ export default function SplitWithImage() {
     Details:
       "Padharo maare dessh presents Kutch tour for all DJites, Come with us and have fun.",
     imageurl: "/kutch.png",
-    isInterested: false,
+    isInterested: true,
     estimateCost: "25000",
     mode: "Road",
     vcurl:

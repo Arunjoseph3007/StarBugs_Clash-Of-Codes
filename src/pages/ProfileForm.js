@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Verify from "../components/Verify";
 import axios from "axios";
-import FormData from "form-data";
 import {
   FormControl,
   Input,
@@ -12,6 +11,7 @@ import {
   Heading,
   Button,
   Center,
+  Text,
 } from "@chakra-ui/react";
 
 export default function ProfileForm() {
@@ -21,41 +21,47 @@ export default function ProfileForm() {
   const [interest, setInterest] = useState("");
   const [dob, setDob] = useState("");
   const [gender, setGender] = useState("");
+  const [imageDetails, setImageDetails] = useState(null);
+
+  useEffect(() => {
+    setName(
+      `${
+        localStorage.getItem("firstname") +
+        " " +
+        localStorage.getItem("lastname")
+      }`
+    );
+  }, []);
+  function uploadImage() {
+    let file = document.getElementById("fileInput").files[0];
+    if (file)
+      setImageDetails( file );
+  }
 
   async function submitForm(e) {
     e.preventDefault();
-    // let data = new FormData();
-    // data.append("name", name);
-    // data.append("location", location);
-    // data.append("interest", interest);
-    // data.append("dob", dob);
-    // data.append("gender", gender);
-    // console.log(data)
-
-    let data = {
-      user: "3",
-      name: { name },
-      interests: { interest },
-      dob: { dob },
-      location: { location },
-      gender: { gender },
-    };
-    console.log(data);
+    let data = new FormData();
+    data.append("user", localStorage.getItem("id"));
+    data.append("name", name);
+    data.append("location", location);
+    data.append("interest", interest);
+    data.append("dob", dob);
+    data.append("gender", gender);
+    if (imageDetails)
+    data.append("profile_pic", imageDetails);
+    
+  
 
     try {
       let headers = {
-        "Content-Type": "application/json",
-        Authorization:
-          "Token 9fb10eb951c9c33a768b4dc475d410f3c2064b928004a2a3aa13a1648f70494c",
+        "Content-Type": "multipart/form-data" ,
+        Authorization: "Token " + localStorage.getItem("token"),
       };
-      let reqOptions = {
-        url: "https://coctrinity.pythonanywhere.com/login/profile-create",
-        method: "POST",
-        headers: headers,
-        data: data,
-      };
-
-      let response = await axios.request(reqOptions);
+      let response = await axios.post(
+        "https://coctrinity.pythonanywhere.com/login/profile-create",
+        data,
+        { headers }
+      );
       console.log(response.data);
     } catch (error) {
       console.log(error);
@@ -65,14 +71,15 @@ export default function ProfileForm() {
       setDob("");
       setGender("");
       setInterest("");
+      setImageDetails(null);
     }
   }
-  
+
   return (
-    <Center my={20} minH="100vh">
+    <Center minH="100vh">
       <Box
         w="50vw"
-        shadow='xl'
+        shadow="xl"
         border={"2px"}
         borderColor="gray.100"
         p={4}
@@ -84,23 +91,30 @@ export default function ProfileForm() {
           encType="multipart/form"
           as="form"
         >
-          <Heading fontFamily='Poppins' textAlign={"center"} as="h4" color={"#0652cf"} my={4}>
+          <Heading
+            fontFamily="Poppins"
+            textAlign={"center"}
+            as="h4"
+            color={"#0652cf"}
+            my={4}
+          >
             Edit Profile
           </Heading>
           <Stack>
             <Box display={"grid"} gridTemplateColumns="1fr 1fr">
-              <FormLabel display={"inline"}>Username</FormLabel>
-              <Input
-                placeholder="Username"
-                w="20vw"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
+              <FormLabel display={"inline"}>Name</FormLabel>
+              <Text w="20vw">{name}</Text>
             </Box>
             <Box display={"grid"} gridTemplateColumns="1fr 1fr">
               <FormLabel display={"inline"}>Profile Photo</FormLabel>
-              <input type="file" />
+              <input
+                  name="photo"
+                  id="fileInput"
+                  accept="image/*"
+                  className="hidden"
+                  type="file"
+                  onChange={uploadImage}
+                />
             </Box>
             <Box>
               <FormLabel>Interests</FormLabel>
