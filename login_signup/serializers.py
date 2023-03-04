@@ -52,7 +52,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['id', 'title', 'body', 'owner','images_post','youtube_link','like_on_post_count','comment_on_post_count']
+        fields = ['id', 'title', 'body', 'owner','images_post','location','youtube_link','like_on_post_count','comment_on_post_count']
 
 class CommentSerializer(serializers.ModelSerializer):
     #owner = serializers.ReadOnlyField(source='owner.name')
@@ -74,3 +74,13 @@ class PostLikeSerializer(serializers.ModelSerializer):
 
 
 
+class addharserializer(serializers.ModelSerializer):
+    class Meta:
+        model = Addhaardocument
+        fields = '__all__'
+
+
+class groupdetailserializer(serializers.ModelSerializer):
+    class Meta:
+        model = Groupdetail
+        fields = '__all__'

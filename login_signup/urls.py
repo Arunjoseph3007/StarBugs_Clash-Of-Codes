@@ -16,6 +16,7 @@ urlpatterns = [
     path('post-like/', views.LikePost_view.as_view()),
     path('post-like/<int:pk>/', views.LikePost_destroy_view.as_view()),
     path('profile-create',views.createprofile.as_view()),
+    path('addhar-create',views.AddharList.as_view()),
     path('profile-detail/<int:pk>/', views.profileDetail.as_view())
 
 ]
