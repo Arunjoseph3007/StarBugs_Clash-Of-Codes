@@ -13,8 +13,10 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 export default function Login() {
+  const router = useRouter();
   const [registerDetails, setRegisterDetails] = useState({
     userName: "",
     password: "",
@@ -37,7 +39,9 @@ export default function Login() {
           username: registerDetails.userName,
         }
       );
-
+      localStorage.setItem("token",res.token)
+      localStorage.setItem("username",res.user.username)
+      router.push("/" + "feed");
       console.log(res.data);
     } catch (error) {
       console.log(error);
