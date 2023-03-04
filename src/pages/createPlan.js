@@ -18,6 +18,8 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react";
+import axios from "axios";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { DateRangePicker } from "react-date-range";
 import { BsFillCalendarDateFill } from "react-icons/bs";
@@ -49,6 +51,7 @@ const Feature = ({ text, icon, iconBg }) => {
 };
 
 export default function CreatePlan() {
+  const router = useRouter();
   const [planReady, setPlanReady] = useState(false);
   const [loading, setLoading] = useState(false);
   const [travelPan, setTravelPlan] = useState("");
@@ -67,10 +70,38 @@ export default function CreatePlan() {
   const [attractions, setAttractions] = useState([]);
   const [hotels, setHotels] = useState([]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    //post api
+    const data = new FormData();
+    data.append("name", tripDetails.name);
+    data.append("source", tripDetails.source);
+    data.append("destination", tripDetails.dest);
+    data.append("time", tripDetails.date.endDate.toDateString());
+    data.append("start_date", tripDetails.date.endDate.toDateString());
+    data.append("budget", tripDetails.budget);
+    data.append("description", tripDetails.desc);
+    data.append("slogan", tripDetails.shortDesc);
+    data.append("no_of_people", tripDetails.noOfPeople);
+    data.append("travel_mode", tripDetails.mode.value);
+    data.append("image", tripDetails.img);
+
+    const res = await axios.post(
+      "http://coctrinity.pythonanywhere.com/login/group-create",
+      data,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Token ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    router.push(`/group/${res.data.id}`);
+    console.log(res.data);
+  };
+
+  const upload = (e) => {
+    setTripDetails((p) => ({ ...p, img: e.target.files[0] }));
   };
 
   const handleGetPlan = async (e) => {
@@ -272,7 +303,7 @@ export default function CreatePlan() {
                 </FormControl>
                 <FormControl>
                   <FormLabel>Image</FormLabel>
-                  <Input rows={8} name="img" type="file" />
+                  <Input onChange={upload} rows={8} name="img" type="file" />
                 </FormControl>
               </Flex>
               <FormControl>
