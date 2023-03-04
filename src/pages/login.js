@@ -14,8 +14,11 @@ import {
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { useUser } from "@/context/userContext";
+
 
 export default function Login() {
+  const { Login:login } = useUser();
   const router = useRouter();
   const [registerDetails, setRegisterDetails] = useState({
     userName: "",
@@ -39,9 +42,11 @@ export default function Login() {
           password: registerDetails.password,
         }
       );
-      localStorage.setItem("token",res.data.token)
       localStorage.setItem("id",res.data.user.id)
+      localStorage.setItem("token",res.data.token)
       localStorage.setItem("username",res.data.user.username)
+      const data =  login(res);
+      console.log(data);
       // localStorage.setItem("username",res.user.username)
       router.push("/" + "feed");
       console.log(res.data);

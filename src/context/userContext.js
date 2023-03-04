@@ -1,7 +1,7 @@
-import axios from "@/libs/axios";
+import axios from "axios";
 import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
-import { toast } from "react-toastify";
+
 
 export const AuthContext = createContext();
 
@@ -19,23 +19,29 @@ export default function AuthProvider({ children }) {
     }
 
     try {
-      const { data } = await axios.get("/accounts/MyUser/" + userId + "/");
+        headers={
+            headers: { 
+                'Authorization': `Token ${localStorage.getItem("token")}`
+              }
+        }
+      const { data } = await axios.get("http://coctrinity.pythonanywhere.com/login/profile-detail/" + userId + "/",{headers});
       setUser({
-        userName: data.username,
-        firstName: data.first_name,
-        lastName: data.last_name,
+        
+        name:data.name,
         email: data.email,
         dob: data.dob,
-        bio: data.bio,
-        photoUrl: process.env.NEXT_PUBLIC_API + data.profile_pic,
-        userId: data.user_id,
+        bio: data.about,
+        gender:data.gender,
+        is_verified:data.is_verify,
+        photoUrl:  data.profile_pic,
+        userId: data.user,
       });
     } catch (e) {
       setUser(null);
     }
   };
 
-  const login =  (res) => {
+  const Login =  (res) => {
     try {
       
 
@@ -43,7 +49,6 @@ export default function AuthProvider({ children }) {
 
       return { ...res.data, success: true };
     } catch (error) {
-      toast.error("Wrong Credentials");
       return { ...error, success: false };
     }
   };
@@ -63,7 +68,7 @@ export default function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, setUser, loading, error, register, login, logout }}
+      value={{ user, setUser, Login, logout,refresh }}
     >
       {!loading && children}
     </AuthContext.Provider>
