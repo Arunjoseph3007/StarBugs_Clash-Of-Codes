@@ -153,8 +153,8 @@ export default function Map() {
     const map = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/streets-v12",
-      // center: [-87.65, 41.84],
-      center: [lat, lng],
+      center: [-87.65, 41.84],
+      // center: [lat, lng],
       zoom: 10,
     });
 
@@ -164,7 +164,7 @@ export default function Map() {
       setZoom(map.getZoom().toFixed(2));
       setBounds(map.getBounds());
       console.log(map.getBounds()._ne.lat);
-      console.log(map.getBounds()._sw.lat);
+      console.log(map.getBounds()._sw);
     });
 
     geojson.features.map((feature) => {

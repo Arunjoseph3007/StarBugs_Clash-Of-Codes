@@ -4,15 +4,20 @@ import axios from "axios";
 import { useEffect } from "react";
 
 const getRestaurants = async (bounds) => {
+  return [];
+  /**
+   * bl sw
+   * tr ne
+   */
   const url =
     "https://travel-advisor.p.rapidapi.com/restaurants/list-in-boundary";
   const options = {
     method: "GET",
     params: {
-      bl_latitude: "11.847676",
-      tr_latitude: "12.838442",
-      bl_longitude: "109.095887",
-      tr_longitude: "109.149359",
+      bl_latitude: bounds?._sw.lat || "11.847676",
+      tr_latitude: bounds?._ne.lat || "12.838442",
+      bl_longitude: bounds?._sw.lng || "109.095887",
+      tr_longitude: bounds?._ne.lng || "109.149359",
     },
     headers: {
       "X-RapidAPI-Key": "3af18041c3msha1b256bea39427cp17010ajsnb89051bb00ac",
@@ -31,6 +36,7 @@ const getRestaurants = async (bounds) => {
 };
 
 export default function MapScreen() {
+  // const [hotels,setHotels]
   useEffect(() => {
     getRestaurants();
   }, []);

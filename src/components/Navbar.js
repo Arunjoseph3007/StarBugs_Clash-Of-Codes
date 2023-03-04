@@ -8,13 +8,20 @@ import {
   Text,
   useColorMode,
 } from "@chakra-ui/react";
+import Image from "next/image";
 
 export default function Navbar() {
   const { toggleColorMode, colorMode } = useColorMode();
 
   return (
-    <Flex gap={3} alignItems="center" paddingInline={16} paddingBlock={4}>
-      <Text fontSize="3xl">Logo</Text>
+    <Flex
+      shadow="md"
+      gap={3}
+      alignItems="center"
+      paddingInline={16}
+      paddingBlock={4}
+    >
+      <Image alt="logo" src="/logo2.png" height={40} width={80} />
       <InputGroup>
         <Input rounded="full" placeholder="Search..." />
         <InputRightElement>
