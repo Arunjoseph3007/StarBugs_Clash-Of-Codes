@@ -7,12 +7,13 @@ import {
   InputRightElement,
   Text,
   useColorMode,
+  useDisclosure,
 } from "@chakra-ui/react";
 import Image from "next/image";
 
 export default function Navbar() {
   const { toggleColorMode, colorMode } = useColorMode();
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Flex
       shadow="md"
@@ -28,25 +29,16 @@ export default function Navbar() {
           <SearchIcon />
         </InputRightElement>
       </InputGroup>
-      <Button rounded="full" onClick={toggleColorMode}>
-        {colorMode == "light" ? <MoonIcon /> : <SunIcon />}
-      </Button>
-      <Button
-        paddingInline={8}
-        rounded="full"
-        colorScheme="facebook"
-        variant="outline"
-      >
-        Login
-      </Button>
-      <Button
-        paddingInline={8}
-        rounded="full"
-        colorScheme="facebook"
-        bg="#0652cf"
-      >
-        Signup
-      </Button>
+      
+      {isOpen ? (
+          <Box pb={4} display={{ md: 'none' }}>
+            <Stack as={'nav'} spacing={4}>
+              {Links.map((link) => (
+                <NavLink key={link}>{link}</NavLink>
+              ))}
+            </Stack>
+          </Box>
+        ) : null}
     </Flex>
   );
 }

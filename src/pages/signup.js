@@ -18,8 +18,9 @@ import {
 import axios from "axios";
 import Link from "next/link";
 import { useState } from "react";
-
+import { useRouter } from "next/router";
 export default function Register() {
+  const router = useRouter();
   const { toggleColorMode, colorMode } = useColorMode();
   const [registerDetails, setRegisterDetails] = useState({
     firstName: "",
@@ -47,7 +48,7 @@ export default function Register() {
           username: registerDetails.userName,
         }
       );
-
+      router.push("/" + "login");
       console.log(res.data);
     } catch (error) {
       console.log(error);
