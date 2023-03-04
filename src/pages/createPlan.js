@@ -11,15 +11,42 @@ import {
   FormControl,
   FormLabel,
   Heading,
+  Icon,
   Input,
   Spinner,
+  Stack,
   Text,
   Textarea,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { DateRangePicker } from "react-date-range";
-import { FaHome } from "react-icons/fa";
+import { BsFillCalendarDateFill } from "react-icons/bs";
+import { FaUsers } from "react-icons/fa";
+import {
+  MdLocationOn,
+  MdOutlineLocationCity,
+  MdOutlineInvertColors,
+  MdOutlineAttachMoney,
+} from "react-icons/md";
 import Select from "react-select";
+
+const Feature = ({ text, icon, iconBg }) => {
+  return (
+    <Stack flex={1} direction={"row"} align={"center"}>
+      <Flex
+        w={8}
+        h={8}
+        align={"center"}
+        justify={"center"}
+        rounded={"full"}
+        bg={iconBg}
+      >
+        {icon}
+      </Flex>
+      <Text fontWeight={600}>{text}</Text>
+    </Stack>
+  );
+};
 
 export default function CreatePlan() {
   const [planReady, setPlanReady] = useState(false);
@@ -178,28 +205,76 @@ export default function CreatePlan() {
               </Flex>
             </>
           ) : (
-            <>
+            <Container maxW="750px">
               <Flex mt={6} gap={5}>
-                <Flex gap={2} flex={1} alignItems="center">
-                  <FaHome /> <Text fontWeight='medium'>{tripDetails.source}</Text>
-                </Flex>
-                <Flex gap={2} flex={1} alignItems="center">
-                  <FaHome /> <Text>{tripDetails.dest}</Text>
-                </Flex>
+                <Feature
+                  text={tripDetails.source}
+                  icon={
+                    <Icon as={MdLocationOn} color={"yellow.500"} w={5} h={5} />
+                  }
+                  iconBg={"yellow.100"}
+                />
+                <Feature
+                  text={tripDetails.dest}
+                  icon={<Icon as={BsFillCalendarDateFill} w={5} h={5} />}
+                  iconBg="purple.100"
+                />
               </Flex>
-            </>
+              <Flex mt={6} gap={5}>
+                <Feature
+                  text={
+                    tripDetails.date.startDate.toDateString() +
+                    "-" +
+                    tripDetails.date.endDate.toDateString()
+                  }
+                  icon={
+                    <Icon
+                      as={MdOutlineLocationCity}
+                      color={"green.700"}
+                      w={5}
+                      h={5}
+                    />
+                  }
+                  iconBg="green.100"
+                />
+                <Feature
+                  text={tripDetails.mode.label}
+                  icon={<Icon as={MdOutlineInvertColors} w={5} h={5} />}
+                  iconBg="blue.100"
+                />
+              </Flex>
+              <Flex mt={6} gap={5}>
+                <Feature
+                  text={tripDetails.noOfPeople + " expected Travellers"}
+                  icon={<Icon as={FaUsers} w={5} h={5} />}
+                  iconBg={"red.100"}
+                />
+                <Feature
+                  text={"₹ " + tripDetails.budget}
+                  icon={<Icon as={MdOutlineAttachMoney} w={5} h={5} />}
+                  iconBg="teal.100"
+                />
+              </Flex>
+            </Container>
           )}
           {tripDetails.desc && !loading && planReady && (
             <Flex mt={6} gap={5} direction="column">
-              <FormControl>
-                <FormLabel>Plan</FormLabel>
-                <Textarea
-                  rows={8}
-                  name="desc"
-                  value={tripDetails.desc}
-                  onChange={handleChange}
-                />
-              </FormControl>
+              <Flex mt={6} gap={5}>
+                <FormControl>
+                  <FormLabel>Name</FormLabel>
+                  <Input
+                    placeholder="Great India Trek"
+                    rows={8}
+                    name="name"
+                    value={tripDetails.name}
+                    onChange={handleChange}
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Image</FormLabel>
+                  <Input rows={8} name="img" type="file" />
+                </FormControl>
+              </Flex>
               <FormControl>
                 <FormLabel>Short Description</FormLabel>
                 <Input
@@ -207,6 +282,16 @@ export default function CreatePlan() {
                   rows={8}
                   name="shortDesc"
                   value={tripDetails.shortDesc}
+                  onChange={handleChange}
+                />
+              </FormControl>
+
+              <FormControl>
+                <FormLabel>Plan</FormLabel>
+                <Textarea
+                  rows={8}
+                  name="desc"
+                  value={tripDetails.desc}
                   onChange={handleChange}
                 />
               </FormControl>
