@@ -129,7 +129,7 @@ export default function CreatePlan() {
 
   const options = [
     { value: "train", label: "Train" },
-    { value: "byRoad", label: "By Road" },
+    { value: "road", label: "By Road" },
     { value: "plane", label: "Plane" },
   ];
 
