@@ -1,179 +1,38 @@
-import { useRef, useEffect, useState, createRef } from "react";
-import mapboxgl from "!mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
 import { Box, Button, Container, Flex, Text } from "@chakra-ui/react";
-import reactDom from "react-dom";
+import Map from "@/components/Map";
+import axios from "axios";
+import { useEffect } from "react";
 
-mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
-
-const geojson = {
-  features: [
-    {
-      type: "Feature",
-      properties: {
-        title: "Lincoln Park",
-        description: "A northside park that is home to the Lincoln Park Zoo",
-      },
-      geometry: {
-        coordinates: [-87.637596, 41.940403],
-        type: "Point",
-      },
+const getRestaurants = async (bounds) => {
+  const url =
+    "https://travel-advisor.p.rapidapi.com/restaurants/list-in-boundary";
+  const options = {
+    method: "GET",
+    params: {
+      bl_latitude: "11.847676",
+      tr_latitude: "12.838442",
+      bl_longitude: "109.095887",
+      tr_longitude: "109.149359",
     },
-    {
-      type: "Feature",
-      properties: {
-        title: "Burnham Park",
-        description: "A lakefront park on Chicago's south side",
-      },
-      geometry: {
-        coordinates: [-87.603735, 41.829985],
-        type: "Point",
-      },
+    headers: {
+      "X-RapidAPI-Key": "3af18041c3msha1b256bea39427cp17010ajsnb89051bb00ac",
+      "X-RapidAPI-Host": "travel-advisor.p.rapidapi.com",
     },
-    {
-      type: "Feature",
-      properties: {
-        title: "Millennium Park",
-        description:
-          "A downtown park known for its art installations and unique architecture",
-      },
-      geometry: {
-        coordinates: [-87.622554, 41.882534],
-        type: "Point",
-      },
-    },
-    {
-      type: "Feature",
-      properties: {
-        title: "Grant Park",
-        description:
-          "A downtown park that is the site of many of Chicago's favorite festivals and events",
-      },
-      geometry: {
-        coordinates: [-87.619185, 41.876367],
-        type: "Point",
-      },
-    },
-    {
-      type: "Feature",
-      properties: {
-        title: "Humboldt Park",
-        description: "A large park on Chicago's northwest side",
-      },
-      geometry: {
-        coordinates: [-87.70199, 41.905423],
-        type: "Point",
-      },
-    },
-    {
-      type: "Feature",
-      properties: {
-        title: "Douglas Park",
-        description:
-          "A large park near in Chicago's North Lawndale neighborhood",
-      },
-      geometry: {
-        coordinates: [-87.699329, 41.860092],
-        type: "Point",
-      },
-    },
-    {
-      type: "Feature",
-      properties: {
-        title: "Calumet Park",
-        description:
-          "A park on the Illinois-Indiana border featuring a historic fieldhouse",
-      },
-      geometry: {
-        coordinates: [-87.530221, 41.715515],
-        type: "Point",
-      },
-    },
-    {
-      type: "Feature",
-      properties: {
-        title: "Jackson Park",
-        description:
-          "A lakeside park that was the site of the 1893 World's Fair",
-      },
-      geometry: {
-        coordinates: [-87.580389, 41.783185],
-        type: "Point",
-      },
-    },
-    {
-      type: "Feature",
-      properties: {
-        title: "Columbus Park",
-        description: "A large park in Chicago's Austin neighborhood",
-      },
-      geometry: {
-        coordinates: [-87.769775, 41.873683],
-        type: "Point",
-      },
-    },
-  ],
-  type: "FeatureCollection",
-};
-
-const Marker = ({ onClick, children, feature }) => {
-  const _onClick = () => {
-    onClick(feature.properties.description);
   };
 
-  return (
-    <button
-      style={{ background: "gray", borderRadius: "100px",padding:'5px' }}
-      onClick={_onClick}
-      className="marker"
-    >
-      <img
-        src="https://placeimg.com/480/480/people"
-        style={{ height: "20px", aspectRatio: 1, borderRadius: "100px" }}
-      />
-    </button>
-  );
+  try {
+    const res = await axios.get(url, options);
+    console.log(res.data.data);
+    console.log(res.data.data[0]);
+    return res.data.data;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-export default function Map() {
-  const mapContainer = useRef(null);
-  const [lng, setLng] = useState(-70.9);
-  const [lat, setLat] = useState(42.35);
-  const [zoom, setZoom] = useState(9);
-
-  const markerClicked = (title) => {
-    window.alert(title);
-  };
-
+export default function MapScreen() {
   useEffect(() => {
-    const map = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: "mapbox://styles/mapbox/streets-v12",
-      center: [-87.65, 41.84],
-      zoom: 10,
-    });
-
-    geojson.features.map((feature) => {
-      // new mapboxgl.Marker().setLngLat(feature.geometry.coordinates).addTo(map);
-
-      const ref = createRef();
-      ref.current = document.createElement("div");
-      reactDom.render(
-        <Marker onClick={markerClicked} feature={feature}>
-          he buddy
-        </Marker>,
-        ref.current
-      );
-
-      new mapboxgl.Marker(ref.current)
-        .setLngLat(feature.geometry.coordinates)
-        .addTo(map);
-    });
-
-    // Add navigation control (the +/- zoom buttons)
-    map.addControl(new mapboxgl.NavigationControl(), "top-right");
-
-    // Clean up on unmount
-    return () => map.remove();
+    getRestaurants();
   }, []);
 
   return (
@@ -185,7 +44,7 @@ export default function Map() {
           </Text>
         </Container>
       </Box>
-      <div style={{ height: "100%", width: "100%" }} ref={mapContainer}></div>
+      <Map />
     </Flex>
   );
 }
