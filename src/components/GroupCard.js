@@ -57,7 +57,7 @@ function GroupCard({
           objectFit="cover"
           maxW={{ base: "100%", sm: "200px" }}
           src={imageurl}
-          alt="Caffe Latte"
+          alt="Location Image"
         />
 
         <Stack>

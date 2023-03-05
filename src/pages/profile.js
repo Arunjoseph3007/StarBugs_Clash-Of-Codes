@@ -13,6 +13,8 @@ import {
   Center,
   Text,
 } from "@chakra-ui/react";
+import { useUser } from "@/context/userContext";
+import { useRouter } from "next/router";
 
 export default function ProfileForm() {
   const [showModal, setShowModal] = useState(false);
@@ -22,7 +24,8 @@ export default function ProfileForm() {
   const [dob, setDob] = useState("");
   const [gender, setGender] = useState("");
   const [imageDetails, setImageDetails] = useState(null);
-
+  const router = useRouter();
+  const { refresh } = useUser();
   useEffect(() => {
     setName(
       `${
@@ -72,6 +75,8 @@ export default function ProfileForm() {
       setGender("");
       setInterest("");
       setImageDetails(null);
+      refresh()
+      router.push(`/feed`);
     }
   }
 
