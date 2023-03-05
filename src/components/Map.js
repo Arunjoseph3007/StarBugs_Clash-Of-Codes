@@ -12,7 +12,9 @@ const Marker = ({ onClick, feature }) => {
       className="marker"
     >
       <img
-        src={feature.properties.image}
+        src={`https://picsum.photos/id/${Math.floor(
+          Math.random() * 300
+        )}/400/200`}
         style={{ height: "25px", aspectRatio: 1, borderRadius: "100px" }}
       />
     </button>
@@ -24,7 +26,7 @@ export default function Map({ hotels, setSelHotel }) {
   const map = useRef(null);
   const [lng, setLng] = useState(-70.9);
   const [lat, setLat] = useState(42.35);
-  const [zoom, setZoom] = useState(9);
+  const [zoom, setZoom] = useState(12.15);
   const [bounds, setBounds] = useState(null);
 
   useEffect(() => {
@@ -38,7 +40,7 @@ export default function Map({ hotels, setSelHotel }) {
       style: "mapbox://styles/mapbox/streets-v12",
       center: [-87.65, 41.84],
       // center: [lat, lng],
-      zoom: 10,
+      zoom: 12.15,
     });
 
     map.current.on("move", () => {
@@ -46,9 +48,17 @@ export default function Map({ hotels, setSelHotel }) {
       setLat(map.current.getCenter().lat.toFixed(4));
       setZoom(map.current.getZoom().toFixed(2));
       setBounds(map.current.getBounds());
-      console.log(map.current.getBounds()._ne.lat);
-      console.log(map.current.getBounds()._sw);
+
+      console.log(map.current.getCenter());
     });
+    // map.current.on("move", () => {
+    //   setLng(map.current.getCenter().lng.toFixed(4));
+    //   setLat(map.current.getCenter().lat.toFixed(4));
+    //   setZoom(map.current.getZoom().toFixed(2));
+    //   setBounds(map.current.getBounds());
+    //   console.log(map.current.getBounds()._ne.lat);
+    //   console.log(map.current.getBounds()._sw);
+    // });
 
     // Add navigation control (the +/- zoom buttons)
     map.current.addControl(new mapboxgl.NavigationControl(), "top-right");
@@ -60,7 +70,7 @@ export default function Map({ hotels, setSelHotel }) {
   useEffect(() => {
     if (!map.current) return;
 
-    const ms =hotels.map((feature) => {
+    const ms = hotels.map((feature) => {
       const ref = createRef();
       ref.current = document.createElement("div");
       reactDom.render(

@@ -38,12 +38,6 @@ export default function PostCard({
         <Button onClick={likePost} variant="ghost" leftIcon={<ViewIcon />}>
           {likeCount} likes
         </Button>
-        <Button variant="ghost" leftIcon={<ChatIcon />}>
-          {likeCount} shares
-        </Button>
-        <Button variant="ghost" leftIcon={<SettingsIcon />}>
-          {likeCount} comments
-        </Button>
       </Flex>
     </Container>
   );

@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 export default function Feed() {
   const [posts, setPosts] = useState([]);
-  
+
   useEffect(() => {
     axios
       .get("http://coctrinity.pythonanywhere.com/login/posts", {
@@ -25,7 +25,7 @@ export default function Feed() {
           <LeftBar />
         </Box>
         <Box flex={2}>
-          <MainFeed posts={posts} />
+          <MainFeed setPosts={setPosts} posts={posts} />
         </Box>
         <Box position="sticky" top={5} flex={1}>
           <RightBar />
