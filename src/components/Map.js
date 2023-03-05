@@ -21,12 +21,10 @@ const Marker = ({ onClick, feature }) => {
   );
 };
 
-export default function Map({ hotels, setSelHotel }) {
+export default function Map({ hotels, setSelHotel, zoom, setZoom, map }) {
   const mapContainer = useRef(null);
-  const map = useRef(null);
   const [lng, setLng] = useState(-70.9);
   const [lat, setLat] = useState(42.35);
-  const [zoom, setZoom] = useState(12.15);
   const [bounds, setBounds] = useState(null);
 
   useEffect(() => {
