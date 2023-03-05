@@ -69,6 +69,7 @@ class Groupdetail(models.Model):
 	owner = models.ForeignKey(User, related_name='group_detail', on_delete=models.CASCADE)
 	name = models.TextField(blank=True, null=True)
 	source = models.TextField(blank=True, null=True)
+	slogan = models.TextField(blank=True,null=True)
 	destination = models.TextField(blank=True, null=True)
 	time = models.TextField(blank=True, null=True)
 	start_date = models.TextField(blank=True, null=True)
@@ -84,3 +85,9 @@ class Groupdetail(models.Model):
 		ordering = ['created']
 
 
+class group_post_interest(models.Model):
+	owner = models.ForeignKey(User, related_name='group_user', on_delete=models.CASCADE)
+	group = models.ForeignKey(Groupdetail, related_name='group',on_delete=models.CASCADE)
+	create_date =  models.DateTimeField(auto_now_add=True)
+	class Meta:
+		ordering = ['create_date']

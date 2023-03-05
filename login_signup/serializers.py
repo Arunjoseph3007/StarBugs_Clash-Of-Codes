@@ -81,6 +81,17 @@ class addharserializer(serializers.ModelSerializer):
 
 
 class groupdetailserializer(serializers.ModelSerializer):
+    interest = serializers.SerializerMethodField('get_interest')
+    def get_interest(self,obj):
+        like =  group_post_interest.objects.filter(group=obj)
+        return like.count()
+
     class Meta:
         model = Groupdetail
+        fields = '__all__'
+
+
+class grouppostinterestserializer(serializers.ModelSerializer):
+    class Meta:
+        model = group_post_interest
         fields = '__all__'

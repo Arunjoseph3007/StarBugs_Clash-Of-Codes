@@ -18,7 +18,10 @@ urlpatterns = [
     path('profile-create',views.createprofile.as_view()),
     path('addhar-create',views.AddharList.as_view()),
     path('group-create',views.groupList.as_view()),
+    path('interest-post',views.interest_post.as_view()),
     path('profile-detail/<int:pk>/', views.profileDetail.as_view()),
     path('group-detail/<int:pk>/', views.groupList_destroy_view.as_view()),
-    path('single-group', views.groupListonlyget.as_view())
+    path('single-group', views.groupListonlyget.as_view()),
+    path('interest-post',views.interest_post.as_view()),
+    #path('search-group',views.search_group.as_view()),
 ]

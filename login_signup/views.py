@@ -251,15 +251,16 @@ class groupList(generics.ListCreateAPIView):
         start_date = request.POST.get('start_date')
         end_date = request.POST.get('end_date')
         description = request.POST.get('description')
+        slogan = request.POST.get('slogan')
         image = request.FILES['image']
         budget = request.POST.get('budget')
         no_of_people = request.POST.get('no_of_people')
         travel_mode = request.POST.get('travel_mode')
 
-        meet_link =  gettingmeetlink()
+        meet_link = 'https://chal-mere-yaar.whereby.com/example-prefix915e7ef0-dc34-4abb-bd88-b06eef858a6a?roomKey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZWV0aW5nSWQiOiI3MDc5NDgzNCIsInJvb21SZWZlcmVuY2UiOnsicm9vbU5hbWUiOiIvZXhhbXBsZS1wcmVmaXg5MTVlN2VmMC1kYzM0LTRhYmItYmQ4OC1iMDZlZWY4NThhNmEiLCJvcmdhbml6YXRpb25JZCI6IjE3OTY0NyJ9LCJpc3MiOiJodHRwczovL2FjY291bnRzLnNydi53aGVyZWJ5LmNvbSIsImlhdCI6MTY3Nzk1NTE3MCwicm9vbUtleVR5cGUiOiJtZWV0aW5nSG9zdCJ9.5kJzVDfFSe6XoNnwgAyIARKmzH4atVamdTXKk0kLCRE'
         print(meet_link)
 
-        userde = Groupdetail.objects.create(owner = self.request.user,name = name,source=source,destination=destination,time=time,start_date=start_date,end_date=end_date,description=description,image=image,budget=budget,no_of_people=no_of_people,travel_mode=travel_mode,meet_link=meet_link)
+        userde = Groupdetail.objects.create(owner = self.request.user,name = name,slogan=slogan,source=source,destination=destination,time=time,start_date=start_date,end_date=end_date,description=description,image=image,budget=budget,no_of_people=no_of_people,travel_mode=travel_mode,meet_link=meet_link)
         dateof = groupdetailserializer(userde)
         return Response(dateof.data)
 
@@ -281,11 +282,25 @@ class groupListonlyget(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self,request):
-        like = Groupdetail.objects.filter(owner=self.request.user)
-        data = groupdetailserializer(like,many=True)
-        return Response(data.data)
+        query = request.GET.get('query')
+        if query:
+            like = Groupdetail.objects.filter(Q(name__icontains=query) | Q(source=query)|Q(destination=query) | Q(travel_mode =query))
+            data = groupdetailserializer(like,many=True)
+            return Response(data.data)
+
+        else:
+            like = Groupdetail.objects.filter(owner=self.request.user)
+            data = groupdetailserializer(like,many=True)
+            return Response(data.data)
 
 
 
+class interest_post(generics.ListCreateAPIView):
+    queryset = group_post_interest.objects.all()
+    serializer_class = grouppostinterestserializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
 
