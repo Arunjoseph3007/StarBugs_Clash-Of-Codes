@@ -20,11 +20,8 @@ import GroupCard from "./GroupCard";
 
 export default function SearchPageGroups({ isLocation }) {
   const router = useRouter();
-  if (isLocation) {
-    return null;
-  }
-  
-  const [allGroups,setAllGroups]= useState([])
+
+  const [allGroups, setAllGroups] = useState([]);
   const [groupDetails, setGroupDetails] = useState({
     Name: "Mera Desh Tour",
     Source: "Mumbai",
@@ -32,26 +29,49 @@ export default function SearchPageGroups({ isLocation }) {
     Details:
       "Padharo maare dessh presents Kutch tour for all DJites, Come with us and have fun.",
     imageurl: "/kutch.png",
-    id:1,
+    id: 1,
   });
   async function getPlan() {
     try {
       let headers = {
-        "Content-Type": "multipart/form-data" ,
+        "Content-Type": "multipart/form-data",
         Authorization: "Token " + localStorage.getItem("token"),
       };
-      var res =await axios.get(`https://coctrinity.pythonanywhere.com/login/group-create`,{headers})
-      setAllGroups(res.data)
+      var res = await axios.get(
+        `https://coctrinity.pythonanywhere.com/login/group-create`,
+        { headers }
+      );
+      setAllGroups(res.data);
       console.log(res.data);
     } catch (error) {
       console.log(error);
     }
   }
-  useEffect(()=>{getPlan()},[])
+  useEffect(() => {
+    getPlan();
+  }, []);
+
+  if (isLocation) {
+    return null;
+  }
   return (
     <SimpleGrid spacing="40px">
-      {allGroups?(allGroups.map((g)=>{return <GroupCard Name={g.name} Source={g.source} Destination={g.destination} imageurl={g.image} id={g.id}/>})):(<Container></Container>)}
-      
+      {allGroups ? (
+        allGroups.map((g) => {
+          return (
+            <GroupCard
+              key={g.id}
+              Name={g.name}
+              Source={g.source}
+              Destination={g.destination}
+              imageurl={g.image}
+              id={g.id}
+            />
+          );
+        })
+      ) : (
+        <Container></Container>
+      )}
     </SimpleGrid>
   );
 }
