@@ -1,9 +1,4 @@
-import {
-  ArrowBackIcon,
-  ChatIcon,
-  SettingsIcon,
-  ViewIcon,
-} from "@chakra-ui/icons";
+import { ArrowBackIcon, Icon, SettingsIcon } from "@chakra-ui/icons";
 import {
   Avatar,
   Button,
@@ -14,12 +9,22 @@ import {
   Input,
   Text,
   Textarea,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
 } from "@chakra-ui/react";
 import PostCard from "./PostCard";
 import axios from "axios";
 import { useState } from "react";
+import { BsFillSendFill } from "react-icons/bs";
 
-export default function MainFeed({ posts }) {
+export default function MainFeed({ posts, setPosts }) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [nP, setNP] = useState({
     title: "",
     content: "",
@@ -67,6 +72,12 @@ export default function MainFeed({ posts }) {
         },
       }
     );
+
+    setPosts((prev) =>
+      prev.map((p) =>
+        p.id == id ? { ...p, like_on_post_count: p.like_on_post_count + 1 } : p
+      )
+    );
   };
 
   return (
@@ -88,43 +99,77 @@ export default function MainFeed({ posts }) {
       >
         <Flex gap={3} alignItems="center">
           <Avatar size="xs" name="Arun joseph" />
-          <Text fontWeight="bold">Arun joseph</Text>
-        </Flex>
-        <Flex gap={3} alignItems="center">
-          <FormControl>
-            <FormLabel>Title</FormLabel>
-            <Input
-              name="title"
-              onChange={hC}
-              value={nP.title}
-              placeholder="Enter title"
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Location</FormLabel>
-            <Input
-              name="location"
-              onChange={hC}
-              placeholder="eg. Dombivli, Maharashtra"
-              value={nP.location}
-            />
-          </FormControl>{" "}
-        </Flex>
-        <FormControl>
-          <FormLabel>Image</FormLabel>
-          <Input type="file" onChange={uIm} />
-        </FormControl>{" "}
-        <Textarea value={nP.body} name="body" onChange={hC} marginBlock={3} />
-        <Flex>
+          <Text flex={1} fontWeight="bold">
+            Arun joseph
+          </Text>
           <Button
             colorScheme="facebook"
             bg="#0652cf"
             leftIcon={<SettingsIcon />}
-            onClick={createPost}
+            onClick={onOpen}
           >
             Create Post
           </Button>
         </Flex>
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent maxW="600px">
+            <ModalHeader>Create you post</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Flex gap={3} alignItems="center">
+                <FormControl>
+                  <FormLabel>Title</FormLabel>
+                  <Input
+                    name="title"
+                    onChange={hC}
+                    value={nP.title}
+                    placeholder="Enter title"
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Location</FormLabel>
+                  <Input
+                    name="location"
+                    onChange={hC}
+                    placeholder="eg. Dombivli, Maharashtra"
+                    value={nP.location}
+                  />
+                </FormControl>{" "}
+              </Flex>
+              <FormControl>
+                <FormLabel>Image</FormLabel>
+                <Input type="file" onChange={uIm} />
+              </FormControl>{" "}
+              <Textarea
+                value={nP.body}
+                name="body"
+                onChange={hC}
+                marginBlock={3}
+              />
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                variant="ghost"
+                colorScheme="blue"
+                mr={3}
+                onClick={onClose}
+              >
+                Close
+              </Button>
+              <Flex>
+                <Button
+                  colorScheme="facebook"
+                  bg="#0652cf"
+                  leftIcon={<Icon as={BsFillSendFill} />}
+                  onClick={createPost}
+                >
+                  Create Post
+                </Button>
+              </Flex>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </Container>
 
       {posts.map((post) => (
