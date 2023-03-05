@@ -46,7 +46,6 @@ export default function Login() {
       localStorage.setItem("token",res.data.token)
       localStorage.setItem("username",res.data.user.username)
       const data =  login(res);
-      console.log(data);
       // localStorage.setItem("username",res.user.username)
       router.push("/" + "feed");
       console.log(res.data);

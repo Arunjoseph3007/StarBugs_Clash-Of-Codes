@@ -19,23 +19,24 @@ export default function AuthProvider({ children }) {
     }
 
     try {
-        headers={
+        const headers={
             headers: { 
                 'Authorization': `Token ${localStorage.getItem("token")}`
               }
         }
-      const { data } = await axios.get("http://coctrinity.pythonanywhere.com/login/profile-detail/" + userId + "/",{headers});
+      const { data } = await axios.get("http://coctrinity.pythonanywhere.com/login/profile-detail/" + userId + "/",headers);
       setUser({
         
-        name:data.name,
-        email: data.email,
-        dob: data.dob,
-        bio: data.about,
-        gender:data.gender,
-        is_verified:data.is_verify,
-        photoUrl:  data.profile_pic,
-        userId: data.user,
+        name:data[0].name,
+        email: data[0].email,
+        dob: data[0].dob,
+        bio: data[0].about,
+        gender:data[0].gender,
+        is_verified:data[0].is_verify,
+        photoUrl:  data[0].profile_pic,
+        userId: data[0].user,
       });
+      console.log(data,"Here");
     } catch (e) {
       setUser(null);
     }

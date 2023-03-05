@@ -56,8 +56,8 @@ function GroupCard({
         <Image
           objectFit="cover"
           maxW={{ base: "100%", sm: "200px" }}
-          src={imageurl}
-          alt="Caffe Latte"
+          src={imageurl[0]=='/'?`http://coctrinity.pythonanywhere.com/${imageurl}`:imageurl}
+          alt="Location Image"
         />
 
         <Stack>
