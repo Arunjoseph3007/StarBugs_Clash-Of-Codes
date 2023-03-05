@@ -46,17 +46,15 @@ export default function CallToActionWithVideo() {
                 
                 zIndex: -1,
               }}>
-              Write once,
+              Journey to
             </Text>
             <br />
             <Text as={'span'} color={'#0652cf'}>
-              use everywhere!
+              Your Dreams
             </Text>
           </Heading>
           <Text color={'gray.500'}>
-            Snippy is a rich coding snippets app that lets you create your own
-            code snippets, categorize them, and even sync them in the cloud so
-            you can use them anywhere. All that is free!
+            Chal Mere Yaar is a one stop solution for the ones who never stop exploring. Create plans, make new travel buddies and get a wholesome experience out of all your trips wit us.
           </Text>
           <Stack
             spacing={{ base: 4, sm: 6 }}
