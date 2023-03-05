@@ -16,7 +16,7 @@ import {
 import Map from "@/components/Map";
 import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 
 const HOTELS = [
     {
