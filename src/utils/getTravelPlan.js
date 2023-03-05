@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export const getTravelPlan = async (days, source, dest) => {
+  return 'This is the plan'
   const options = {
     method: "POST",
     url: "https://you-chat-gpt.p.rapidapi.com/",

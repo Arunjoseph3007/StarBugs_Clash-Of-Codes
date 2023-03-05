@@ -107,14 +107,14 @@ export default function CreatePlan() {
   const handleGetPlan = async (e) => {
     setLoading(true);
 
-    const [attr, hot, tPlan] = [{ data: [] }, { data: [] }, "this is the plan"];
-    // const [attr, hot, tPlan] = await Promise.all([
-    //   getAttractions(tripDetails.dest),
-    //   getHotels(tripDetails.dest),
-    //   getTravelPlan(2, tripDetails.source, tripDetails.dest),
-    // ]);
+    // const [attr, hot, tPlan] = [{ data: [] }, { data: [] }, "this is the plan"];
+    const [attr, hot, tPlan] = await Promise.all([
+      getAttractions(tripDetails.dest),
+      getHotels(tripDetails.dest),
+      getTravelPlan(2, tripDetails.source, tripDetails.dest),
+    ]);
 
-    console.log({ attr, hot });
+    console.log({ attr: attr.data[0], hot: hot.data[0] });
     setHotels(hot.data);
     setAttractions(attr.data);
     setTravelPlan(tPlan);
