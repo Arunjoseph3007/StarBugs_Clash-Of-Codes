@@ -19,8 +19,7 @@ import {
   ModalHeader,
   ModalFooter,
   ModalBody,
-  ModalCloseButton,
-  Lorem,
+
 } from "@chakra-ui/react";
 import Navbar from "@/components/Navbar";
 import { useState, useRef, useEffect } from "react";
@@ -87,7 +86,7 @@ export default function SplitWithImage() {
         endDate: res.data[0].time,
         People: res.data[0].no_of_people,
         Details:
-        res.data[0].description,
+        res.data[0].slogan,
         imageurl: "https://coctrinity.pythonanywhere.com/"+res.data[0].image,
         isInterested: false,
         estimateCost: res.data[0].budget,

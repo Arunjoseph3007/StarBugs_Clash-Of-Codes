@@ -1,62 +1,57 @@
-import { List, ListItem, Box, Flex, Center} from "@chakra-ui/react";
+import {
+  Card,
+  SimpleGrid,
+  CardBody,
+  CardFooter,
+  Stack,
+  Heading,
+  Button,
+  Text,
+  Container,
+  Image,
+  Flex,
+  Icon,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import GroupCard from "./GroupCard";
 
-export default function SearchPageGroups({isLocation}) {
-  const imgStyles = {
-    height: "100%",
-    width: "30px",
-    display: "inline-block",
-    borderRadius: "50%",
-    border: "1px solid black",
-    position: "relative",
-    top: "10px"
-  };
-  if(isLocation){
-    return null
+export default function SearchPageGroups({ isLocation }) {
+  const router = useRouter();
+  if (isLocation) {
+    return null;
   }
-
+  
+  const [allGroups,setAllGroups]= useState([])
+  const [groupDetails, setGroupDetails] = useState({
+    Name: "Mera Desh Tour",
+    Source: "Mumbai",
+    Destination: "Kutch",
+    Details:
+      "Padharo maare dessh presents Kutch tour for all DJites, Come with us and have fun.",
+    imageurl: "/kutch.png",
+    id:1,
+  });
+  async function getPlan() {
+    try {
+      let headers = {
+        "Content-Type": "multipart/form-data" ,
+        Authorization: "Token " + localStorage.getItem("token"),
+      };
+      var res =await axios.get(`https://coctrinity.pythonanywhere.com/login/group-create`,{headers})
+      setAllGroups(res.data)
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  useEffect(()=>{getPlan()},[])
   return (
-    <Flex justify="center" align="center" direction="column">
-      <List spacing={3} fontSize='2xl' bgColor='blue.100' p='10px' w='50vw' h='70vh'>
-        <ListItem bgColor='blue.50' as={Flex} justify='center' >
-          <img
-            src={"group-thumbnail.png"}
-            style={imgStyles}
-          />
-          <Box display="inline" m='5px'>Group 1</Box>
-        </ListItem>
-        <ListItem bgColor='blue.50' as={Flex} justify='center'>
-          <img
-            src={"group-thumbnail.png"}
-            style={imgStyles}
-          />
-          <Box display="inline" m='5px'>Group 2</Box>
-        </ListItem>
-        <ListItem bgColor='blue.50' as={Flex} justify='center'>
-          <img
-            src={"group-thumbnail.png"}
-            style={imgStyles}
-          />
-          <Box display="inline" m='5px'>Group 3</Box>
-        </ListItem>
-        <ListItem bgColor='blue.50' as={Flex} justify='center'>
-          <img
-            src={"group-thumbnail.png"}
-            style={imgStyles}
-          />
-          <Box display="inline" m='5px'>Group 4</Box>
-        </ListItem>
-        <ListItem bgColor='blue.50' as={Flex} justify='center'>
-          <img
-            src={"group-thumbnail.png"}
-            style={imgStyles}
-          />
-          <Box display="inline" m='5px'>Group 5</Box>
-        </ListItem>
-        <ListItem bgColor='blue.50' as={Flex} justify='center'>
-          <img src={"group-thumbnail.png"} style={imgStyles} />
-          <Box display="inline" m='5px'>Group 6</Box>
-        </ListItem>
-      </List>
-    </Flex>
+    <SimpleGrid spacing="40px">
+      {allGroups?(allGroups.map((g)=>{return <GroupCard Name={g.name} Source={g.source} Destination={g.destination} imageurl={g.image} id={g.id}/>})):(<Container></Container>)}
+      
+    </SimpleGrid>
   );
 }
