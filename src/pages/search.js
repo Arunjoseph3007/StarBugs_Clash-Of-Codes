@@ -1,38 +1,43 @@
+import { Input, Box, Button, Center } from "@chakra-ui/react";
+import { useState } from "react";
+import SearchPageGrid from "../components/SearchPageGrid";
+import SearchPageGroups from "../components/SearchPageGroups";
 import Navbar from "@/components/Navbar";
-import { SearchIcon } from "@chakra-ui/icons";
-import {
-  Box,
-  Container,
-  Flex,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
-  Text,
-} from "@chakra-ui/react";
 
-export default function Search() {
+export default function SearchPage() {
+  const [isLocation, setIsLocation] = useState(true);
   return (
-    <Box>
-      <Navbar />
-      <Flex h="100vh">
-        <Box w="20vw" shadow="2xl">
-          <Text py={2} px={4} fontSize={20} bg="#0652cf" color="white">
-            Search
-          </Text>
-
-          <Flex direction='column' gap={4} p={2}>
-            <InputGroup>
-              <InputLeftElement>
-                <SearchIcon />
-              </InputLeftElement>
-              <Input placeholder="Destination.." rounded="full" variant="filled" />
-            </InputGroup>
-          </Flex>
-        </Box>
-
-        <Container flex={1}>list</Container>
-      </Flex>
+    <Box colorScheme="facebook" p="10px">
+      <Navbar/>
+      <Center>
+        <Input placeholder="Type here to search" w="40vw" />
+        <Button colorScheme={"facebook"} m="10">
+          Submit
+        </Button>
+      </Center>
+      <Center>
+        <Button
+          colorScheme="facebook"
+          variant="link"
+          m="5"
+          onClick={() => {
+            setIsLocation(true);
+          }}
+        >
+          Location
+        </Button>
+        <Button
+          colorScheme="facebook"
+          variant="link"
+          onClick={() => {
+            setIsLocation(false);
+          }}
+        >
+          Groups
+        </Button>
+      </Center>
+      <SearchPageGrid isLocation={isLocation} />
+      <SearchPageGroups isLocation={isLocation} />
     </Box>
   );
 }
