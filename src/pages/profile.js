@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { useUser } from "@/context/userContext";
 import { useRouter } from "next/router";
+import Navbar from "@/components/Navbar";
 
 export default function ProfileForm() {
   const [showModal, setShowModal] = useState(false);
@@ -81,6 +82,9 @@ export default function ProfileForm() {
   }
 
   return (
+    <>
+    
+      <Navbar/>
     <Center minH="100vh">
       <Box
         w="50vw"
@@ -183,5 +187,6 @@ export default function ProfileForm() {
         </FormControl>
       </Box>
     </Center>
+    </>
   );
 }

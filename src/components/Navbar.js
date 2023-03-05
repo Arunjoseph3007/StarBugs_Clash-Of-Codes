@@ -16,7 +16,9 @@ import {
   MenuItem,
   MenuDivider,
   Avatar,
+  Container,
 } from "@chakra-ui/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 export default function Navbar() {
@@ -41,12 +43,25 @@ export default function Navbar() {
         h={"10%"}
         src={"/logo2.png"}
       />
-      <InputGroup width={"80%"}>
-        <Input rounded="full" placeholder="Search..." />
-        <InputRightElement>
-          <SearchIcon />
-        </InputRightElement>
-      </InputGroup>
+      <Container>
+        
+      <Button variant="ghost"  >
+        <Link href="/feed">Feed</Link>
+      </Button>
+      <Button variant="ghost"  >
+        <Link href="/profile">Edit Profile</Link>
+      </Button>
+      
+      <Button variant="ghost" >
+        <Link href="/search">Search</Link>
+      </Button>
+      <Button variant="ghost" >
+        <Link href="/map">Map</Link>
+      </Button>
+      <Button variant="ghost">
+        <Link href="/createPlan">Create Plan</Link>
+      </Button>
+      </Container>
 
       <Flex alignItems={"center"}>
         <Menu>

@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import Map from "@/components/Map";
 import { useEffect, useState } from "react";
+import Navbar from "@/components/Navbar";
 
 const HOTELS = [
     {
@@ -309,7 +310,10 @@ export default function MapScreen() {
   const [isF, setIsF] = useState(true);
 
   return (
-    <Flex h="100vh">
+    <>
+    
+      <Navbar/>
+    <Flex h="80vh" >
       <Box w="35vw">
         <Container py={2} bg="#0652cf" color="white">
           <Text fontWeight="bold" fontSize={22}>
@@ -351,5 +355,6 @@ export default function MapScreen() {
         hotels={[...(isH ? hotels : []), ...(isF ? friends : [])]}
       />
     </Flex>
+    </>
   );
 }

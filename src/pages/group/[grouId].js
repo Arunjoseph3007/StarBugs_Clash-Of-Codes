@@ -88,7 +88,7 @@ export default function SplitWithImage() {
         Destination: res.data[0].destination,
         startDate: res.data[0].start_date,
         endDate: res.data[0].time,
-        People: res.data[0].no_of_people,
+        People: res.data[0]?.interest_people?.length,
         Details: res.data[0].slogan,
         imageurl: "https://coctrinity.pythonanywhere.com/" + res.data[0].image,
         isInterested: false,
@@ -114,6 +114,7 @@ export default function SplitWithImage() {
     );
 
     setGroupDetails((prev) => ({ ...prev, People: prev.People + 1 }));
+    setGroupDetails((prev) => ({ ...prev, isInterested: true }));
   };
 
   useEffect(() => {
