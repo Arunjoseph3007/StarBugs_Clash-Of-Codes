@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 import {
   Box,
   Flex,
@@ -8,7 +8,7 @@ import {
   Container,
   Avatar,
   useColorModeValue,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
 const Testimonial = ({ children }) => {
   return <Box>{children}</Box>;
@@ -17,28 +17,29 @@ const Testimonial = ({ children }) => {
 const TestimonialContent = ({ children }) => {
   return (
     <Stack
-      bg={useColorModeValue('white', 'gray.800')}
-      boxShadow={'lg'}
+      bg={useColorModeValue("white", "gray.800")}
+      boxShadow={"lg"}
       p={8}
-      rounded={'xl'}
-      align={'center'}
-      pos={'relative'}
+      rounded={"xl"}
+      align={"center"}
+      pos={"relative"}
       _after={{
         content: `""`,
         w: 0,
         h: 0,
-        borderLeft: 'solid transparent',
+        borderLeft: "solid transparent",
         borderLeftWidth: 16,
-        borderRight: 'solid transparent',
+        borderRight: "solid transparent",
         borderRightWidth: 16,
-        borderTop: 'solid',
+        borderTop: "solid",
         borderTopWidth: 16,
-        borderTopColor: useColorModeValue('white', 'gray.800'),
-        pos: 'absolute',
-        bottom: '-16px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-      }}>
+        borderTopColor: useColorModeValue("white", "gray.800"),
+        pos: "absolute",
+        bottom: "-16px",
+        left: "50%",
+        transform: "translateX(-50%)",
+      }}
+    >
       {children}
     </Stack>
   );
@@ -46,7 +47,7 @@ const TestimonialContent = ({ children }) => {
 
 const TestimonialHeading = ({ children }) => {
   return (
-    <Heading as={'h3'} fontSize={'xl'}>
+    <Heading as={"h3"} fontSize={"xl"}>
       {children}
     </Heading>
   );
@@ -55,25 +56,22 @@ const TestimonialHeading = ({ children }) => {
 const TestimonialText = ({ children }) => {
   return (
     <Text
-      textAlign={'center'}
-      color={useColorModeValue('gray.600', 'gray.400')}
-      fontSize={'sm'}>
+      textAlign={"center"}
+      color={useColorModeValue("gray.600", "gray.400")}
+      fontSize={"sm"}
+    >
       {children}
     </Text>
   );
 };
 
-const TestimonialAvatar = ({
-  src,
-  name,
-  title,
-}) => {
+const TestimonialAvatar = ({ src, name, title }) => {
   return (
-    <Flex align={'center'} mt={8} direction={'column'}>
+    <Flex align={"center"} mt={8} direction={"column"}>
       <Avatar src={src} alt={name} mb={2} />
-      <Stack spacing={-1} align={'center'}>
+      <Stack spacing={-1} align={"center"}>
         <Text fontWeight={600}>{name}</Text>
-        <Text fontSize={'sm'} color={useColorModeValue('gray.600', 'gray.400')}>
+        <Text fontSize={"sm"} color={useColorModeValue("gray.600", "gray.400")}>
           {title}
         </Text>
       </Stack>
@@ -83,57 +81,63 @@ const TestimonialAvatar = ({
 
 export default function WithSpeechBubbles() {
   return (
-    <Box bg={useColorModeValue('gray.100', 'gray.700')}>
-      <Container maxW={'7xl'} py={16} mt={10} mb={20} as={Stack} spacing={12}>
-        <Stack spacing={0} align={'center'}>
+    <Box bg={useColorModeValue("gray.100", "gray.700")}>
+      <Container maxW={"7xl"} py={16} mt={10} mb={20} as={Stack} spacing={12}>
+        <Stack spacing={0} align={"center"}>
           <Heading>What our users tell about us</Heading>
           <Text>We have users all over the world</Text>
         </Stack>
         <Stack
-          direction={{ base: 'column', md: 'row' }}
-          spacing={{ base: 10, md: 4, lg: 10 }}>
+          direction={{ base: "column", md: "row" }}
+          spacing={{ base: 10, md: 4, lg: 10 }}
+        >
           <Testimonial>
             <TestimonialContent>
-              <TestimonialHeading>Great for exploring new places</TestimonialHeading>
+              <TestimonialHeading>
+                Great for exploring new places
+              </TestimonialHeading>
               <TestimonialText>
-              Thanks to Chal Mere Yaar, I was able to explore a new city and experience its unique culture in the best way possible.
+                Thanks to Chal Mere Yaar, I was able to explore a new city and
+                experience its unique culture in the best way possible.
               </TestimonialText>
             </TestimonialContent>
             <TestimonialAvatar
-              src={
-                'Person1.png'
-              }
-              name={'Benjamin Davis'}
+              src={"Person1.png"}
+              name={"Benjamin Davis"}
               // title={'CEO at ABC Corporation'}
             />
           </Testimonial>
           <Testimonial>
             <TestimonialContent>
-              <TestimonialHeading>Makes planning trips smooth</TestimonialHeading>
+              <TestimonialHeading>
+                Makes planning trips smooth
+              </TestimonialHeading>
               <TestimonialText>
-              I had the trip of a lifetime thanks to Chal Mere Yaar. From start to finish, everything was perfect and I can't wait to plan my next trip.
+                I had the trip of a lifetime thanks to Chal Mere Yaar. From
+                start to finish, everything was perfect and I can&apos;t wait to
+                plan my next trip.
               </TestimonialText>
             </TestimonialContent>
             <TestimonialAvatar
-              src={
-                'Person2.png'
-              }
-              name={'Aarav Gupta'}
+              src={"Person2.png"}
+              name={"Aarav Gupta"}
               // title={'CEO at ABC Corporation'}
             />
           </Testimonial>
           <Testimonial>
             <TestimonialContent>
-              <TestimonialHeading>Find new travel buddies effortlessly</TestimonialHeading>
+              <TestimonialHeading>
+                Find new travel buddies effortlessly
+              </TestimonialHeading>
               <TestimonialText>
-                I recently went on a trip with like-minded travel buddies paired by Chal Mere Yaar.The pairings were perfect. It was as if I was travelling with my own friends.
+                I recently went on a trip with like-minded travel buddies paired
+                by Chal Mere Yaar.The pairings were perfect. It was as if I was
+                travelling with my own friends.
               </TestimonialText>
             </TestimonialContent>
             <TestimonialAvatar
-              src={
-                'Person3.png'
-              }
-              name={'Emily Williams'}
+              src={"Person3.png"}
+              name={"Emily Williams"}
               // title={'CEO at ABC Corporation'}
             />
           </Testimonial>
