@@ -3,16 +3,20 @@ import {
   Button,
   Checkbox,
   Container,
+  FormLabel,
   Flex,
   HStack,
   Heading,
   Image,
+  Input,
+  InputGroup,
   Switch,
   Text,
 } from "@chakra-ui/react";
 import Map from "@/components/Map";
 import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
+import { useRef, useState } from "react";
 
 const HOTELS = [
     {
@@ -303,9 +307,11 @@ const HOTELS = [
   ];
 
 export default function MapScreen() {
+  const map = useRef(null);
   const [hotels, setHotels] = useState(HOTELS);
   const [friends, setFriends] = useState(USES);
   const [selHotel, setSelHotel] = useState(null);
+  const [zoom, setZoom] = useState(12.15);
   const [isH, setIsH] = useState(true);
   const [isF, setIsF] = useState(true);
 
@@ -329,6 +335,21 @@ export default function MapScreen() {
             <Switch isChecked={isF} onChange={(e) => setIsF((p) => !p)} />
             <Text>{"Friends"}</Text>
           </HStack>
+          <InputGroup>
+            <FormLabel>Zoom</FormLabel>
+            <Input
+              min={5}
+              max={15}
+              step={0.1}
+              value={zoom}
+              onChange={(e) => {
+                map.current.setZoom(e.target.value);
+                setZoom(e.target.value);
+              }}
+              type="range"
+              placeholder="Enter amount"
+            />
+          </InputGroup>
           {selHotel && (
             <Container
               py={4}
@@ -351,6 +372,9 @@ export default function MapScreen() {
         </Box>
       </Box>
       <Map
+        map={map}
+        setZoom={setZoom}
+        zoom={zoom}
         setSelHotel={setSelHotel}
         hotels={[...(isH ? hotels : []), ...(isF ? friends : [])]}
       />

@@ -9,16 +9,27 @@ import {
   StackDivider,
   Icon,
   useColorModeValue,
+  Avatar,
   Button,
   Grid,
   GridItem,
   useDisclosure,
   Modal,
   ModalOverlay,
+  Tabs,
+  Tab,
+  TabList,
+  Tag,
+  VStack,
+  TabPanel,
+  TabPanels,
   ModalContent,
+  Badge,
   ModalHeader,
+  Box,
   ModalFooter,
   ModalBody,
+  HStack,
 } from "@chakra-ui/react";
 import Navbar from "@/components/Navbar";
 import { useState, useRef, useEffect } from "react";
@@ -66,6 +77,7 @@ export default function SplitWithImage() {
     vcurl:
       "https://chal-mere-yaar.whereby.com/example-prefix513d5e4d-9918-4ce3-863b-66a98cbac233?roomKey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZWV0aW5nSWQiOiI3MDc5MTI1OSIsInJvb21SZWZlcmVuY2UiOnsicm9vbU5hbWUiOiIvZXhhbXBsZS1wcmVmaXg1MTNkNWU0ZC05OTE4LTRjZTMtODYzYi02NmE5OGNiYWMyMzMiLCJvcmdhbml6YXRpb25JZCI6IjE3OTY0NyJ9LCJpc3MiOiJodHRwczovL2FjY291bnRzLnNydi53aGVyZWJ5LmNvbSIsImlhdCI6MTY3NzkzMzYxNywicm9vbUtleVR5cGUiOiJtZWV0aW5nSG9zdCJ9.h-Uad-TMu4TGisXiC0mxFK6Df0tpPSfP4oqy4yIjhaY",
     plan: "Plan Here",
+    interestedUsers: [],
   });
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
@@ -96,6 +108,7 @@ export default function SplitWithImage() {
         mode: res.data[0].travel_mode,
         vcurl: res.data[0].meet_link,
         plan: res.data[0].description,
+        interestedUsers: res.data[0].interest_people,
       });
     } catch (error) {
       console.log(error);
@@ -217,12 +230,56 @@ export default function SplitWithImage() {
               finalFocusRef={btnRef}
               isOpen={isOpen}
               scrollBehavior={"inside"}
+              size="xl"
             >
               <ModalOverlay />
               <ModalContent>
                 <ModalHeader>Detailed Plan</ModalHeader>
 
-                <ModalBody>{groupDetails.plan}</ModalBody>
+                <ModalBody>
+                  <Tabs>
+                    <TabList>
+                      <Tab>Plan</Tab>
+                      <Tab>Users</Tab>
+                    </TabList>
+                    <TabPanels>
+                      <TabPanel>{groupDetails.plan}</TabPanel>
+                      <TabPanel>
+                        <VStack>
+                          {groupDetails.interestedUsers?.map((u) => (
+                            <Container key={u.id}>
+                              <HStack gap={3}>
+                                <Avatar
+                                  name={u.name}
+                                  src={
+                                    "http://coctrinity.pythonanywhere.com/" +
+                                    u.profile_pic
+                                  }
+                                />
+                                <Box>
+                                  <Text fontSize={15} fontWeight="bold">
+                                    {u.name}
+                                  </Text>
+                                  <HStack>
+                                    {u.interest.split(" ").map((p) => (
+                                      <Badge fontSize=".7rem" key={p}>
+                                        {p}
+                                      </Badge>
+                                    ))}
+                                  </HStack>
+                                  {}
+                                </Box>
+                                {u.is_verify && (
+                                  <Tag colorScheme="facebook">Verified</Tag>
+                                )}
+                              </HStack>
+                            </Container>
+                          ))}
+                        </VStack>
+                      </TabPanel>
+                    </TabPanels>
+                  </Tabs>
+                </ModalBody>
                 <ModalFooter>
                   <Button onClick={onClose} colorScheme={"facebook"}>
                     Close

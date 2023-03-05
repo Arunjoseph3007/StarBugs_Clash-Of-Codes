@@ -25,7 +25,6 @@ export default function LeftBar() {
       <Button variant="ghost" leftIcon={<Icon as={FaMapMarked} />}>
         <Link href="/map">Map</Link>
       </Button>
-      
       <Button
         leftIcon={<Icon color="white" as={GiPackedPlanks} />}
         colorScheme="facebook"
